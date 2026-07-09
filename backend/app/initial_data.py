@@ -25,8 +25,15 @@ async def create_initial_data() -> None:
                 is_active=True,
             )
             session.add(user)
-            await session.commit()
             print(f"Created initial superuser: {settings.first_superuser_email}")
+        else:
+            # Ensure password matches current environment config
+            user.hashed_password = get_password_hash(settings.first_superuser_password)
+            user.is_active = True
+            user.is_superuser = True
+            print(f"Updated initial superuser: {settings.first_superuser_email}")
+
+        await session.commit()
 
 
 if __name__ == "__main__":

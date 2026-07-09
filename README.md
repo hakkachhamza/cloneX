@@ -69,12 +69,14 @@ Wait ~60–90 seconds for the database, backend, worker, and frontend to start.
 
 ### 6. Login
 
-Default admin account (created automatically):
+Default admin account (created automatically on every startup):
 
 - **Email:** `admin@cloneforge.local`
 - **Password:** `admin`
 
-> **Security tip:** Change the admin email/password and `SECRET_KEY` in `.env` for production.
+The password is reset to these values every time the backend container starts, so this login is guaranteed to work even if the database already exists.
+
+> **Security tip:** Change `FIRST_SUPERUSER_EMAIL` and `FIRST_SUPERUSER_PASSWORD` in `.env` for production.
 
 ---
 
