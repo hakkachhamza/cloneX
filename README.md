@@ -30,20 +30,12 @@ The fastest way to run cloneX is with Docker Compose.
 ### 1. Clone the repository
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/hakkachhamza/cloneX.git
 cd cloneX
 ```
 
-### 2. Add your branding images
 
-Place these files in `frontend/public/`:
-
-```text
-frontend/public/logo.png   # your site logo
-frontend/public/bg.jpg     # your dark background
-```
-
-### 3. Configure environment
+### 2. Configure environment
 
 ```bash
 cp .env.example .env
@@ -51,7 +43,7 @@ cp .env.example .env
 
 Edit `.env` if needed. The defaults work for local development.
 
-### 4. Start the stack
+### 3. Start the stack
 
 ```bash
 docker compose up --build -d
@@ -59,7 +51,7 @@ docker compose up --build -d
 
 Wait ~60–90 seconds for the database, backend, worker, and frontend to start.
 
-### 5. Open the app
+### 4. Open the app
 
 | Service | URL |
 |---------|-----|
@@ -67,7 +59,7 @@ Wait ~60–90 seconds for the database, backend, worker, and frontend to start.
 | API Docs | http://localhost:8000/api/docs |
 | Health | http://localhost:8000/health |
 
-### 6. Login
+### 5. Login
 
 Default admin account (created automatically on every startup):
 
@@ -76,7 +68,7 @@ Default admin account (created automatically on every startup):
 
 The password is reset to these values every time the backend container starts, so this login is guaranteed to work even if the database already exists.
 
-> **Security tip:** Change `FIRST_SUPERUSER_EMAIL` and `FIRST_SUPERUSER_PASSWORD` in `.env` for production.
+
 
 ---
 
@@ -274,9 +266,7 @@ docker compose logs worker -f
 
 Reduce `max_depth` and `max_pages` for faster results.
 
-### Frontend shows broken logo/background
 
-Make sure `logo.png` and `bg.jpg` exist in `frontend/public/`, then rebuild:
 
 ```bash
 docker compose down
