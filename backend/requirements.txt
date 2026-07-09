@@ -1,0 +1,38 @@
+# Web framework
+fastapi==0.111.0
+uvicorn[standard]==0.30.1
+python-multipart==0.0.9
+
+# Database
+sqlalchemy[asyncio]==2.0.31
+asyncpg==0.29.0
+alembic==1.13.1
+
+# Auth & security
+bcrypt==4.0.1
+passlib[bcrypt]==1.7.4
+python-jose[cryptography]==3.3.0
+
+# Validation & settings
+pydantic==2.7.4
+pydantic-settings==2.3.4
+email-validator==2.1.2
+
+# Celery & cache
+celery==5.4.0
+redis==5.0.6
+
+# Crawler / parsing
+playwright==1.44.0
+beautifulsoup4==4.12.3
+requests==2.32.3
+lxml==5.2.2
+cssutils==2.11.1
+tinycss2==1.3.0
+
+# Storage
+boto3==1.34.131
+
+# Utilities
+aiofiles==23.2.1
+Pillow==10.4.0
