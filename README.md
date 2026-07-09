@@ -1,20 +1,51 @@
-# cloneX — Website Template Extractor
+<div align="center">
 
-> **Authorized website cloning for redesign & development.**
+<img src="frontend/public/logo.png" alt="cloneX logo" width="120" />
 
-cloneX is a production-ready SaaS application that crawls websites you own or have permission to clone, downloads their assets, removes proprietary branding, and generates clean, editable project templates.
+# cloneX
 
-![cloneX](frontend/public/logo.png)
+**Authorized website cloning for redesign & development.**
+
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](#license--disclaimer)
+[![Docker](https://img.shields.io/badge/docker-ready-2496ED?logo=docker&logoColor=white)](#quick-start-docker)
+[![Next.js](https://img.shields.io/badge/frontend-Next.js%2014-000000?logo=next.js&logoColor=white)](#tech-stack)
+[![FastAPI](https://img.shields.io/badge/backend-FastAPI-009688?logo=fastapi&logoColor=white)](#tech-stack)
+[![PostgreSQL](https://img.shields.io/badge/database-PostgreSQL%2015-4169E1?logo=postgresql&logoColor=white)](#tech-stack)
+
+cloneX crawls websites you own or have permission to clone, downloads their assets, strips proprietary branding, and hands you back a clean, editable project template — ready for your own redesign.
+
+</div>
+
+---
+
+## Table of Contents
+
+- [What cloneX Does](#what-clonex-does)
+- [Quick Start (Docker)](#quick-start-docker)
+- [Step-by-Step Usage Guide](#step-by-step-usage-guide)
+- [Configuration](#configuration)
+- [Local Development](#local-development)
+- [API Documentation](#api-documentation)
+- [Security & Authorization](#security--authorization)
+- [Tech Stack](#tech-stack)
+- [Troubleshooting](#troubleshooting)
+- [Deploy to Production](#deploy-to-production)
+- [License & Disclaimer](#license--disclaimer)
+- [Support](#support)
 
 ---
 
 ## What cloneX Does
 
-1. **Crawl** — Follows internal links, detects sitemaps, respects `robots.txt`
-2. **Download** — Saves HTML, CSS, JS, images, fonts, icons, and media
-3. **Rewrite** — Converts absolute URLs to local paths, repairs broken links
-4. **Sanitize** — Removes analytics, tracking scripts, and proprietary branding
-5. **Export** — Generates a ready-to-edit project with `README.md` and `package.json`
+cloneX turns any authorized website into a ready-to-edit local project in five steps:
+
+| Step | Description |
+|:----:|-------------|
+| 🕷️ **Crawl** | Follows internal links, detects sitemaps, respects `robots.txt` |
+| 📥 **Download** | Saves HTML, CSS, JS, images, fonts, icons, and media |
+| 🔗 **Rewrite** | Converts absolute URLs to local paths and repairs broken links |
+| 🧹 **Sanitize** | Strips analytics, tracking scripts, and proprietary branding |
+| 📦 **Export** | Generates a ready-to-edit project with `README.md` and `package.json` |
 
 ---
 
@@ -34,14 +65,13 @@ git clone https://github.com/hakkachhamza/cloneX.git
 cd cloneX
 ```
 
-
 ### 2. Configure environment
 
 ```bash
 cp .env.example .env
 ```
 
-Edit `.env` if needed. The defaults work for local development.
+The defaults work for local development — edit `.env` only if you need to customize something.
 
 ### 3. Start the stack
 
@@ -49,74 +79,70 @@ Edit `.env` if needed. The defaults work for local development.
 docker compose up --build -d
 ```
 
-Wait ~60–90 seconds for the database, backend, worker, and frontend to start.
+Give it **~60–90 seconds** for the database, backend, worker, and frontend to spin up.
 
 ### 4. Open the app
 
 | Service | URL |
 |---------|-----|
-| Frontend | http://localhost:3000 |
-| API Docs | http://localhost:8000/api/docs |
-| Health | http://localhost:8000/health |
+| 🖥️ Frontend | http://localhost:3000 |
+| 📚 API Docs | http://localhost:8000/api/docs |
+| ❤️ Health | http://localhost:8000/health |
 
-### 5. Login
+### 5. Log in
 
-Default admin account (created automatically on every startup):
+A default admin account is created automatically on every startup:
 
-- **Email:** `admin@cloneforge.local`
-- **Password:** `admin`
+| Field | Value |
+|-------|-------|
+| Email | `admin@cloneforge.local` |
+| Password | `admin` |
 
-The password is reset to these values every time the backend container starts, so this login is guaranteed to work even if the database already exists.
-
-
+> ⚠️ **Note:** This password is reset on every backend restart, so the login always works — even against an existing database. **Change it immediately in any shared or production environment.**
 
 ---
 
 ## Step-by-Step Usage Guide
 
-### Create your first clone project
+### 1. Create your first clone project
 
-1. **Open the dashboard** at http://localhost:3000/dashboard
+1. Open the dashboard at **http://localhost:3000/dashboard**
 2. Click **Projects** in the sidebar
 3. Click **New project**
 4. Enter:
-   - **Project name:** My Site Clone
-   - **Website URL:** `https://example.com` (a site you own or authorize)
+   - **Project name:** `My Site Clone`
+   - **Website URL:** `https://example.com` *(a site you own or are authorized to clone)*
 5. Click **Create & clone**
 
-### Monitor the crawl
+### 2. Monitor the crawl
 
 - The crawl starts automatically
-- Watch the progress bar on the project detail page
-- You can **pause**, **resume**, or **cancel** the job
+- Track progress on the project detail page
+- **Pause**, **resume**, or **cancel** the job at any time
 
-### Preview the result
+### 3. Preview the result
 
-Once the crawl completes:
+Once the crawl completes, open the project and switch between:
 
-1. Open the project
-2. Switch between:
-   - **Original preview** — the live source site
-   - **Generated preview** — your cloned template
-   - **Split screen** — side-by-side comparison
+- **Original preview** — the live source site
+- **Generated preview** — your cloned template
+- **Split screen** — side-by-side comparison
 
-### Download the template
-
-Use the API to download the exported project:
+### 4. Download the template
 
 ```bash
-# Login
+# Log in and get a token
 curl -X POST "http://localhost:8000/api/v1/auth/login" \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -d "username=admin@cloneforge.local&password=admin"
 
-# Download as ZIP (replace PROJECT_ID)
+# Download the project as a ZIP (replace PROJECT_ID)
 curl "http://localhost:8000/api/v1/projects/PROJECT_ID/download?format=zip" \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -o project.zip
 ```
 
-The ZIP contains:
+The exported ZIP is structured as:
 
 ```text
 project/
@@ -130,9 +156,9 @@ project/
 └── package.json
 ```
 
-### Customize placeholders
+### 5. Customize placeholders
 
-Open any exported HTML file and replace placeholders:
+Open any exported HTML file and replace the placeholders with your own content:
 
 - `{{COMPANY_NAME}}`
 - `{{EMAIL}}`
@@ -148,12 +174,12 @@ Key environment variables in `.env`:
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `SECRET_KEY` | JWT signing key | change in production |
-| `DATABASE_URL` | PostgreSQL connection | local Docker |
-| `REDIS_URL` | Redis connection | local Docker |
+| `SECRET_KEY` | JWT signing key | *change in production* |
+| `DATABASE_URL` | PostgreSQL connection string | local Docker |
+| `REDIS_URL` | Redis connection string | local Docker |
 | `STORAGE_TYPE` | `local` or `s3` | `local` |
-| `MAX_CRAWL_DEPTH` | Max crawl depth | `5` |
-| `ALLOW_PRIVATE_NETWORKS` | Allow local/private targets | `false` |
+| `MAX_CRAWL_DEPTH` | Maximum crawl depth | `5` |
+| `ALLOW_PRIVATE_NETWORKS` | Allow local/private crawl targets | `false` |
 | `FIRST_SUPERUSER_EMAIL` | Seed admin email | `admin@cloneforge.local` |
 | `FIRST_SUPERUSER_PASSWORD` | Seed admin password | `admin` |
 
@@ -172,7 +198,8 @@ S3_ENDPOINT_URL=...
 
 ## Local Development
 
-### Backend
+<details>
+<summary><strong>Backend</strong></summary>
 
 ```bash
 cd backend
@@ -185,7 +212,10 @@ python -m app.initial_data
 uvicorn app.main:app --reload --port 8000
 ```
 
-### Worker
+</details>
+
+<details>
+<summary><strong>Worker</strong></summary>
 
 ```bash
 cd backend
@@ -193,7 +223,10 @@ source .venv/bin/activate
 celery -A app.workers.celery_app worker --loglevel=info
 ```
 
-### Frontend
+</details>
+
+<details>
+<summary><strong>Frontend</strong></summary>
 
 ```bash
 cd frontend
@@ -201,11 +234,13 @@ npm install
 npm run dev
 ```
 
+</details>
+
 ---
 
 ## API Documentation
 
-Interactive API docs are available at:
+Interactive API docs are available once the backend is running:
 
 - **Swagger UI:** http://localhost:8000/api/docs
 - **ReDoc:** http://localhost:8000/api/redoc
@@ -216,13 +251,13 @@ Interactive API docs are available at:
 
 cloneX is designed for legitimate, authorized use only:
 
-- Only `http://` and `https://` URLs are accepted
-- Private networks and localhost are blocked by default
-- `robots.txt` is respected by default
-- Analytics, tracking, and authentication tokens are removed from exports
-- Credentials are never included in exported projects
+- ✅ Only `http://` and `https://` URLs are accepted
+- ✅ Private networks and localhost are blocked by default
+- ✅ `robots.txt` is respected by default
+- ✅ Analytics, tracking, and authentication tokens are stripped from exports
+- ✅ Credentials are never included in exported projects
 
-**You must only clone websites you own or have explicit written permission to clone.**
+> **You must only clone websites you own or have explicit written permission to clone.**
 
 ---
 
@@ -230,48 +265,60 @@ cloneX is designed for legitimate, authorized use only:
 
 | Layer | Technology |
 |-------|------------|
-| Frontend | Next.js 14, React 18, TypeScript, Tailwind CSS, Framer Motion |
-| Backend | FastAPI, SQLAlchemy, Pydantic |
-| Database | PostgreSQL 15 |
-| Queue | Redis, Celery |
-| Crawler | Playwright, BeautifulSoup, requests |
-| DevOps | Docker, Docker Compose, GitHub Actions |
+| **Frontend** | Next.js 14 · React 18 · TypeScript · Tailwind CSS · Framer Motion |
+| **Backend** | FastAPI · SQLAlchemy · Pydantic |
+| **Database** | PostgreSQL 15 |
+| **Queue** | Redis · Celery |
+| **Crawler** | Playwright · BeautifulSoup · requests |
+| **DevOps** | Docker · Docker Compose · GitHub Actions |
 
 ---
 
 ## Troubleshooting
 
-### Database is unhealthy
+<details>
+<summary><strong>Database is unhealthy</strong></summary>
 
 ```bash
 docker compose down -v
 docker compose up --build -d
 ```
 
-### Port 5432 already in use
+</details>
+
+<details>
+<summary><strong>Port 5432 already in use</strong></summary>
 
 ```bash
 netstat -ano | findstr :5432
 ```
 
-Stop the conflicting service or change the port in `.env` and `docker-compose.yml`.
+Stop the conflicting service, or change the port in `.env` and `docker-compose.yml`.
 
-### Crawl gets stuck
+</details>
 
-Check worker logs:
+<details>
+<summary><strong>Crawl gets stuck</strong></summary>
+
+Check the worker logs:
 
 ```bash
 docker compose logs worker -f
 ```
 
-Reduce `max_depth` and `max_pages` for faster results.
+Then reduce `max_depth` and `max_pages` for faster results.
 
+</details>
 
+<details>
+<summary><strong>Full reset</strong></summary>
 
 ```bash
 docker compose down
 docker compose up --build -d
 ```
+
+</details>
 
 ---
 
@@ -281,7 +328,7 @@ docker compose up --build -d
 2. Use managed PostgreSQL and Redis
 3. Configure S3-compatible storage
 4. Run migrations with Alembic
-5. Use a reverse proxy (nginx/traefik) with TLS
+5. Put a reverse proxy (nginx/traefik) with TLS in front of the app
 6. Set `NODE_ENV=production` and `DEBUG=false`
 
 ---
@@ -294,4 +341,10 @@ cloneX is provided for legitimate website redesign and template extraction on si
 
 ## Support
 
-For issues or feature requests, open a GitHub issue.
+Found a bug or have a feature request? [Open a GitHub issue](https://github.com/hakkachhamza/cloneX/issues).
+
+<div align="center">
+
+Made with ⚙️ by [hakkachhamza](https://github.com/hakkachhamza)
+
+</div>
